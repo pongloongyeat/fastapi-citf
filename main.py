@@ -34,13 +34,13 @@ async def help() -> Dict:
         '/vaccination/malaysia/{date}': get_vax_data_malaysia.__doc__,
         '/registration/state': get_latest_registration_data_state.__doc__,
         '/registration/state/all/latest': get_latest_registration_data_state.__doc__,
-        '/registration/state/{state}/latest': get_latest_registration_data_for_state.__doc__,
         '/registration/state/all/{date}': get_registration_data_all_state.__doc__,
+        '/registration/state/{state}/latest': get_latest_registration_data_for_state.__doc__,
         '/registration/state/{state}/{date}': get_registration_data_state.__doc__,
         '/vaccination/state': get_latest_vax_data_state.__doc__,
         '/vaccination/state/all/latest': get_latest_vax_data_state.__doc__,
-        '/vaccination/state/{state}/latest': get_latest_vax_data_for_state.__doc__,
         '/vaccination/state/all/{date}': get_vax_data_all_state.__doc__,
+        '/vaccination/state/{state}/latest': get_latest_vax_data_for_state.__doc__,
         '/vaccination/state/{state}/{date}': get_vax_data_state.__doc__,
     }
 
@@ -99,6 +99,19 @@ async def get_latest_registration_data_state() -> Dict:
 
     return vax_registration_state_parser.csv().tail(16).to_dict('records')
 
+@app.get('/registration/state/all/{date}')
+async def get_registration_data_all_state(date: str) -> Union[Dict, None]:
+    """Returns the registration statistics for all states
+    during a certain date with format YYYY-MM-DD."""
+
+    dataframe = vax_registration_state_parser.csv()
+    matching = dataframe[dataframe['date'] == date].to_dict('records')
+
+    if len(matching):
+        return matching
+    else:
+        raise HTTPException(status_code=404, detail=f'Record not found for date {date}')
+
 @app.get('/registration/state/{state}/latest')
 async def get_latest_registration_data_for_state(state: str) -> Union[Dict, None]:
     """Returns the latest registration statistics for a specific state.
@@ -112,19 +125,6 @@ async def get_latest_registration_data_for_state(state: str) -> Union[Dict, None
         return matching
     else:
         raise HTTPException(status_code=404, detail=f'Record not found for state {state}')
-
-@app.get('/registration/state/all/{date}')
-async def get_registration_data_all_state(date: str) -> Union[Dict, None]:
-    """Returns the registration statistics for all states
-    during a certain date with format YYYY-MM-DD."""
-
-    dataframe = vax_registration_state_parser.csv()
-    matching = dataframe[dataframe['date'] == date].to_dict('records')
-
-    if len(matching):
-        return matching
-    else:
-        raise HTTPException(status_code=404, detail=f'Record not found for date {date}')
 
 @app.get('/registration/state/{state}/{date}')
 async def get_registration_data_state(state: str, date: str) -> Union[Dict, None]:
@@ -152,6 +152,19 @@ async def get_latest_vax_data_state() -> Dict:
 
     return vax_state_parser.csv().tail(16).to_dict('records')
 
+@app.get('/vaccination/state/all/{date}')
+async def get_vax_data_all_state(date: str) -> Union[Dict, None]:
+    """Returns the vaccination statistics for all states
+    during a certain date with format YYYY-MM-DD."""
+
+    dataframe = vax_state_parser.csv()
+    matching = dataframe[dataframe['date'] == date].to_dict('records')
+
+    if len(matching):
+        return matching
+    else:
+        raise HTTPException(status_code=404, detail=f'Record not found for date {date}')
+
 @app.get('/vaccination/state/{state}/latest')
 async def get_latest_vax_data_for_state(state: str) -> Union[Dict, None]:
     """Returns the latest vaccination statistics for a specific state.
@@ -165,19 +178,6 @@ async def get_latest_vax_data_for_state(state: str) -> Union[Dict, None]:
         return matching
     else:
         raise HTTPException(status_code=404, detail=f'Record not found for state {state}')
-
-@app.get('/vaccination/state/all/{date}')
-async def get_vax_data_all_state(date: str) -> Union[Dict, None]:
-    """Returns the vaccination statistics for all states
-    during a certain date with format YYYY-MM-DD."""
-
-    dataframe = vax_state_parser.csv()
-    matching = dataframe[dataframe['date'] == date].to_dict('records')
-
-    if len(matching):
-        return matching
-    else:
-        raise HTTPException(status_code=404, detail=f'Record not found for date {date}')
 
 @app.get('/vaccination/state/{state}/{date}')
 async def get_vax_data_state(state: str, date: str) -> Union[Dict, None]:
