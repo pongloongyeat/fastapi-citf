@@ -55,8 +55,7 @@ async def get_latest_registration_data_malaysia() -> Union[Dict, None]:
 
 @app.get('/registration/malaysia/{date}')
 async def get_registration_data_malaysia(date: str) -> Union[Dict, None]:
-    """Returns the registration statistics for Malaysia
-    during a certain date with format YYYY-MM-DD."""
+    """Returns the registration statistics for Malaysia during a certain date with format YYYY-MM-DD."""
 
     dataframe = vax_registration_malaysia_parser.csv()
     matching = dataframe[dataframe['date'] == date].to_dict('records')
@@ -77,8 +76,7 @@ async def get_latest_vax_data_malaysia() -> Dict:
 
 @app.get('/vaccination/malaysia/{date}')
 async def get_vax_data_malaysia(date: str) -> Union[Dict, None]:
-    """Returns the vaccination statistics for Malaysia
-    during a certain date with format YYYY-MM-DD."""
+    """Returns the vaccination statistics for Malaysia during a certain date with format YYYY-MM-DD."""
 
     dataframe = vax_malaysia_parser.csv()
     matching = dataframe[dataframe['date'] == date].to_dict('records')
@@ -101,8 +99,7 @@ async def get_latest_registration_data_state() -> Dict:
 
 @app.get('/registration/state/all/{date}')
 async def get_registration_data_all_state(date: str) -> Union[Dict, None]:
-    """Returns the registration statistics for all states
-    during a certain date with format YYYY-MM-DD."""
+    """Returns the registration statistics for all states during a certain date with format YYYY-MM-DD."""
 
     dataframe = vax_registration_state_parser.csv()
     matching = dataframe[dataframe['date'] == date].to_dict('records')
@@ -114,9 +111,7 @@ async def get_registration_data_all_state(date: str) -> Union[Dict, None]:
 
 @app.get('/registration/state/{state}/latest')
 async def get_latest_registration_data_for_state(state: str) -> Union[Dict, None]:
-    """Returns the latest registration statistics for a specific state.
-    Note that this should follow the same naming scheme as that specified
-    in the CITF repository (see https://github.com/CITF-Malaysia/citf-public/blob/main/registration/vaxreg_state.csv)."""
+    """Returns the latest registration statistics for a specific state. Note that this should follow the same naming scheme as that specified in the CITF repository (see https://github.com/CITF-Malaysia/citf-public/blob/main/registration/vaxreg_state.csv)."""
 
     dataframe = vax_registration_state_parser.csv().tail(16)
     matching = dataframe[dataframe['state'] == state].to_dict('records')
@@ -128,11 +123,7 @@ async def get_latest_registration_data_for_state(state: str) -> Union[Dict, None
 
 @app.get('/registration/state/{state}/{date}')
 async def get_registration_data_state(state: str, date: str) -> Union[Dict, None]:
-    """Returns the registration statistics for a
-    certain state during a certain date with format
-    YYYY-MM-DD. Note that this should follow the same
-    naming scheme as that specified in the CITF repository
-    (see https://github.com/CITF-Malaysia/citf-public/blob/main/registration/vaxreg_state.csv)."""
+    """Returns the registration statistics for a certain state during a certain date with format YYYY-MM-DD. Note that this should follow the same naming scheme as that specified in the CITF repository (see https://github.com/CITF-Malaysia/citf-public/blob/main/registration/vaxreg_state.csv)."""
 
     dataframe = vax_registration_state_parser.csv()
     matching = dataframe[dataframe['date'] == date]
@@ -154,8 +145,7 @@ async def get_latest_vax_data_state() -> Dict:
 
 @app.get('/vaccination/state/all/{date}')
 async def get_vax_data_all_state(date: str) -> Union[Dict, None]:
-    """Returns the vaccination statistics for all states
-    during a certain date with format YYYY-MM-DD."""
+    """Returns the vaccination statistics for all states during a certain date with format YYYY-MM-DD."""
 
     dataframe = vax_state_parser.csv()
     matching = dataframe[dataframe['date'] == date].to_dict('records')
@@ -167,9 +157,7 @@ async def get_vax_data_all_state(date: str) -> Union[Dict, None]:
 
 @app.get('/vaccination/state/{state}/latest')
 async def get_latest_vax_data_for_state(state: str) -> Union[Dict, None]:
-    """Returns the latest vaccination statistics for a specific state.
-    Note that this should follow the same naming scheme as that specified
-    in the CITF repository (see https://github.com/CITF-Malaysia/citf-public/blob/main/registration/vaxreg_state.csv)."""
+    """Returns the latest vaccination statistics for a specific state. Note that this should follow the same naming scheme as that specified in the CITF repository (see https://github.com/CITF-Malaysia/citf-public/blob/main/registration/vaxreg_state.csv)."""
 
     dataframe = vax_state_parser.csv().tail(16)
     matching = dataframe[dataframe['state'] == state].to_dict('records')
@@ -181,11 +169,7 @@ async def get_latest_vax_data_for_state(state: str) -> Union[Dict, None]:
 
 @app.get('/vaccination/state/{state}/{date}')
 async def get_vax_data_state(state: str, date: str) -> Union[Dict, None]:
-    """Returns the vaccination statistics for a
-    certain state during a certain date with format
-    YYYY-MM-DD. Note that this should follow the same
-    naming scheme as that specified in the CITF repository
-    (see https://github.com/CITF-Malaysia/citf-public/blob/main/registration/vaxreg_state.csv)."""
+    """Returns the vaccination statistics for a certain state during a certain date with format YYYY-MM-DD. Note that this should follow the same naming scheme as that specified in the CITF repository (see https://github.com/CITF-Malaysia/citf-public/blob/main/registration/vaxreg_state.csv)."""
 
     dataframe = vax_state_parser.csv()
     matching = dataframe[dataframe['date'] == date]
