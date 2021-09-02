@@ -1,6 +1,13 @@
 from typing import Dict, Union
 from fastapi import FastAPI, HTTPException
-from parser import CITFGitHubCSVParser
+
+# This try block serves no purpose
+# other than to enable type hinting/
+# suggestions for VSCode lol
+try:
+    from parser import CITFGitHubCSVParser
+except ImportError:
+    from .parser import CITFGitHubCSVParser
 
 
 app = FastAPI()
