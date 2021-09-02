@@ -29,7 +29,10 @@ class CommitUtils:
         })
 
     def get_latest_file_commit(repo_filepath: str) -> Union[None, Commit]:
-        return CommitUtils.get_file_commit_history(repo_filepath=repo_filepath, per_page=1)[0]
+        latest_commit = CommitUtils.get_file_commit_history(repo_filepath=repo_filepath, per_page=1)
+
+        if latest_commit != None and len(latest_commit) > 0:
+            return latest_commit[0]
 
     def get_commit_history(per_page: int) -> Union[None, List[Commit]]:
         return CommitUtils.get_commit_history_with_params(params={
@@ -37,7 +40,10 @@ class CommitUtils:
         })
 
     def get_latest_commit() -> Union[None, Commit]:
-        return CommitUtils.get_commit_history(per_page=1)[0]
+        latest_commit = CommitUtils.get_commit_history(per_page=1)
+
+        if latest_commit != None and len(latest_commit) > 0:
+            return latest_commit[0]
 
 
 if __name__ == '__main__':
