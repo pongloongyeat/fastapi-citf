@@ -1,5 +1,5 @@
-from typing import Dict
-from fastapi import FastAPI
+from typing import Dict, Union
+from fastapi import FastAPI, HTTPException
 from parser import CITFGitHubCSVParser
 
 
@@ -20,18 +20,18 @@ async def help() -> Dict:
 #region Vaccination registration statistics
 @app.get('/registration/malaysia')
 @app.get('/registration/malaysia/latest')
-async def get_latest_registration_data_malaysia() -> Dict:
+async def get_latest_registration_data_malaysia() -> Union[Dict, None]:
     return vax_registration_malaysia_parser.csv().tail(1).to_dict('records')[0]
 
 @app.get('/registration/malaysia/{date}')
-async def get_registration_data_malaysia(date: str) -> Dict:
+async def get_registration_data_malaysia(date: str) -> Union[Dict, None]:
     dataframe = vax_registration_malaysia_parser.csv()
     matching = dataframe[dataframe['date'] == date].to_dict('records')
 
     if len(matching):
         return matching[0]
     else:
-        return {}
+        raise HTTPException(status_code=404, detail=f'Record not found for date {date}')
 #endregion
 
 #region Vaccination statistics
@@ -41,14 +41,14 @@ async def get_latest_vax_data_malaysia() -> Dict:
     return vax_malaysia_parser.csv().tail(1).to_dict('records')[0]
 
 @app.get('/vaccination/malaysia/{date}')
-async def get_vax_data_malaysia(date: str) -> Dict:
+async def get_vax_data_malaysia(date: str) -> Union[Dict, None]:
     dataframe = vax_malaysia_parser.csv()
     matching = dataframe[dataframe['date'] == date].to_dict('records')
 
     if len(matching):
         return matching[0]
     else:
-        return {}
+        raise HTTPException(status_code=404, detail=f'Record not found for date {date}')
 #endregion
 #endregion
 
@@ -60,27 +60,27 @@ async def get_latest_registration_data_state() -> Dict:
     return vax_registration_state_parser.csv().tail(16).to_dict('records')
 
 @app.get('/registration/state/{state}/latest')
-async def get_latest_registration_data_for_state(state: str) -> Dict:
+async def get_latest_registration_data_for_state(state: str) -> Union[Dict, None]:
     dataframe = vax_registration_state_parser.csv().tail(16)
     matching = dataframe[dataframe['state'] == state].to_dict('records')
 
     if len(matching):
         return matching
     else:
-        return {}
+        raise HTTPException(status_code=404, detail=f'Record not found for state {state}')
 
 @app.get('/registration/state/all/{date}')
-async def get_registration_data_state(date: str) -> Dict:
+async def get_registration_data_state(date: str) -> Union[Dict, None]:
     dataframe = vax_registration_state_parser.csv()
     matching = dataframe[dataframe['date'] == date].to_dict('records')
 
     if len(matching):
         return matching
     else:
-        return {}
+        raise HTTPException(status_code=404, detail=f'Record not found for date {date}')
 
 @app.get('/registration/state/{state}/{date}')
-async def get_registration_data_state(state: str, date: str) -> Dict:
+async def get_registration_data_state(state: str, date: str) -> Union[Dict, None]:
     dataframe = vax_registration_state_parser.csv()
     matching = dataframe[dataframe['date'] == date]
     matching = matching[matching['state'] == state].to_dict('records')
@@ -88,7 +88,7 @@ async def get_registration_data_state(state: str, date: str) -> Dict:
     if len(matching):
         return matching
     else:
-        return {}
+        raise HTTPException(status_code=404, detail=f'Record not found for state {state} and date {date}')
 #endregion
 
 #region Vaccination statistics
@@ -98,27 +98,27 @@ async def get_latest_vax_data_state() -> Dict:
     return vax_state_parser.csv().tail(16).to_dict('records')
 
 @app.get('/vaccination/state/{state}/latest')
-async def get_latest_vax_data_for_state(state: str) -> Dict:
+async def get_latest_vax_data_for_state(state: str) -> Union[Dict, None]:
     dataframe = vax_state_parser.csv().tail(16)
     matching = dataframe[dataframe['state'] == state].to_dict('records')
 
     if len(matching):
         return matching
     else:
-        return {}
+        raise HTTPException(status_code=404, detail=f'Record not found for state {state}')
 
 @app.get('/vaccination/state/all/{date}')
-async def get_vax_data_state(date: str) -> Dict:
+async def get_vax_data_state(date: str) -> Union[Dict, None]:
     dataframe = vax_state_parser.csv()
     matching = dataframe[dataframe['date'] == date].to_dict('records')
 
     if len(matching):
         return matching
     else:
-        return {}
+        raise HTTPException(status_code=404, detail=f'Record not found for date {date}')
 
 @app.get('/vaccination/state/{state}/{date}')
-async def get_vax_data_state(state: str, date: str) -> Dict:
+async def get_vax_data_state(state: str, date: str) -> Union[Dict, None]:
     dataframe = vax_state_parser.csv()
     matching = dataframe[dataframe['date'] == date]
     matching = matching[matching['state'] == state].to_dict('records')
@@ -126,6 +126,6 @@ async def get_vax_data_state(state: str, date: str) -> Dict:
     if len(matching):
         return matching
     else:
-        return {}
+        raise HTTPException(status_code=404, detail=f'Record not found for state {state} and date {date}')
 #endregion
 #endregion
