@@ -52,3 +52,80 @@ async def get_vax_data_malaysia(date: str) -> Dict:
 #endregion
 #endregion
 
+#region State
+#region Vaccination registration statistics
+@app.get('/registration/state')
+@app.get('/registration/state/all/latest')
+async def get_latest_registration_data_state() -> Dict:
+    return vax_registration_state_parser.csv().tail(16).to_dict('records')
+
+@app.get('/registration/state/{state}/latest')
+async def get_latest_registration_data_for_state(state: str) -> Dict:
+    dataframe = vax_registration_state_parser.csv().tail(16)
+    matching = dataframe[dataframe['state'] == state].to_dict('records')
+
+    if len(matching):
+        return matching
+    else:
+        return {}
+
+@app.get('/registration/state/all/{date}')
+async def get_registration_data_state(date: str) -> Dict:
+    dataframe = vax_registration_state_parser.csv()
+    matching = dataframe[dataframe['date'] == date].to_dict('records')
+
+    if len(matching):
+        return matching
+    else:
+        return {}
+
+@app.get('/registration/state/{state}/{date}')
+async def get_registration_data_state(state: str, date: str) -> Dict:
+    dataframe = vax_registration_state_parser.csv()
+    matching = dataframe[dataframe['date'] == date]
+    matching = matching[matching['state'] == state].to_dict('records')
+
+    if len(matching):
+        return matching
+    else:
+        return {}
+#endregion
+
+#region Vaccination statistics
+@app.get('/vaccination/state')
+@app.get('/vaccination/state/all/latest')
+async def get_latest_vax_data_state() -> Dict:
+    return vax_state_parser.csv().tail(16).to_dict('records')
+
+@app.get('/vaccination/state/{state}/latest')
+async def get_latest_vax_data_for_state(state: str) -> Dict:
+    dataframe = vax_state_parser.csv().tail(16)
+    matching = dataframe[dataframe['state'] == state].to_dict('records')
+
+    if len(matching):
+        return matching
+    else:
+        return {}
+
+@app.get('/vaccination/state/all/{date}')
+async def get_vax_data_state(date: str) -> Dict:
+    dataframe = vax_state_parser.csv()
+    matching = dataframe[dataframe['date'] == date].to_dict('records')
+
+    if len(matching):
+        return matching
+    else:
+        return {}
+
+@app.get('/vaccination/state/{state}/{date}')
+async def get_vax_data_state(state: str, date: str) -> Dict:
+    dataframe = vax_state_parser.csv()
+    matching = dataframe[dataframe['date'] == date]
+    matching = matching[matching['state'] == state].to_dict('records')
+
+    if len(matching):
+        return matching
+    else:
+        return {}
+#endregion
+#endregion
