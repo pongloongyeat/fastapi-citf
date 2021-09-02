@@ -12,10 +12,10 @@ except ImportError:
 
 app = FastAPI()
 
-# vax_registration_malaysia_parser = CITFGitHubCSVParser(path_to_csv='registration/vaxreg_malaysia.csv')
-# vax_registration_state_parser = CITFGitHubCSVParser(path_to_csv='registration/vaxreg_state.csv')
-# vax_malaysia_parser = CITFGitHubCSVParser(path_to_csv='vaccination/vax_malaysia.csv')
-# vax_state_parser = CITFGitHubCSVParser(path_to_csv='vaccination/vax_state.csv')
+vax_registration_malaysia_parser = CITFGitHubCSVParser(path_to_csv='registration/vaxreg_malaysia.csv')
+vax_registration_state_parser = CITFGitHubCSVParser(path_to_csv='registration/vaxreg_state.csv')
+vax_malaysia_parser = CITFGitHubCSVParser(path_to_csv='vaccination/vax_malaysia.csv')
+vax_state_parser = CITFGitHubCSVParser(path_to_csv='vaccination/vax_state.csv')
 
 
 @app.get('/')
