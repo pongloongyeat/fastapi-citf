@@ -12,15 +12,17 @@ class CITFGitHubCSVParser:
     def __init__(self, path_to_csv: str) -> None:
         self.path_to_csv = path_to_csv
 
-        # Get commit history to see if path valid
+        # Get commit history to see if path is valid
         latest_commit = CommitUtils.get_latest_file_commit(self.path_to_csv)
 
         if latest_commit == None:
             raise ValueError(f'csv file does not exist at path: {path_to_csv}')
 
+        self.__data = pandas.read_csv(f'{self.BASE_REPO_URL}/{self.path_to_csv}')
+
     def csv(self):
         """Returns the CSV file as a pandas DataFrame."""
-        return pandas.read_csv(f'{self.BASE_REPO_URL}/{self.path_to_csv}')
+        return self.__data
 
 
 if __name__ == '__main__':
