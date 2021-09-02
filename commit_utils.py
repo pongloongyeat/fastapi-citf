@@ -2,8 +2,12 @@ import requests
 from typing import List, Union
 from requests.models import HTTPError
 
-from commit import Commit
-from utils import add_params_to_url
+try:
+    from commit import Commit
+    from utils import add_params_to_url
+except ImportError:
+    from .commit import Commit
+    from .utils import add_params_to_url
 
 
 BASE_URL = 'https://api.github.com/repos/CITF-Malaysia/citf-public/commits'

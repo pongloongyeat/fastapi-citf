@@ -1,7 +1,9 @@
-import os
 import pandas
 
-from commit_utils import CommitUtils
+try:
+    from commit_utils import CommitUtils
+except ImportError:
+    from .commit_utils import CommitUtils
 
 
 class CITFGitHubCSVParser:
