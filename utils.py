@@ -23,3 +23,7 @@ def save_metadata(filepath: str, metadata: dict):
 
     with open(f'cache/{filename}.metadata', 'w') as f:
         f.write(json.dumps(metadata))
+
+def format_docstring(docstr: str) -> str:
+    """Removes \n and 4 consecutive spaces."""
+    return docstr.replace('\n', '').replace('    ', '')

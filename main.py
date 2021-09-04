@@ -1,5 +1,7 @@
 from typing import Dict, Union
 from fastapi import FastAPI, HTTPException
+from utils import format_docstring
+
 
 # This try block serves no purpose
 # other than to enable type hinting/
@@ -26,22 +28,22 @@ async def help() -> Dict:
     return {
         '/': help.__doc__,
         '/help': help.__doc__,
-        '/registration/malaysia': get_latest_registration_data_malaysia.__doc__,
-        '/registration/malaysia/latest': get_latest_registration_data_malaysia.__doc__,
-        '/registration/malaysia/{date}': get_registration_data_malaysia.__doc__,
-        '/vaccination/malaysia': get_latest_vax_data_malaysia.__doc__,
-        '/vaccination/malaysia/latest': get_latest_vax_data_malaysia.__doc__,
-        '/vaccination/malaysia/{date}': get_vax_data_malaysia.__doc__,
-        '/registration/state': get_latest_registration_data_state.__doc__,
-        '/registration/state/all/latest': get_latest_registration_data_state.__doc__,
-        '/registration/state/all/{date}': get_registration_data_all_state.__doc__,
-        '/registration/state/{state}/latest': get_latest_registration_data_for_state.__doc__,
-        '/registration/state/{state}/{date}': get_registration_data_state.__doc__,
-        '/vaccination/state': get_latest_vax_data_state.__doc__,
-        '/vaccination/state/all/latest': get_latest_vax_data_state.__doc__,
-        '/vaccination/state/all/{date}': get_vax_data_all_state.__doc__,
-        '/vaccination/state/{state}/latest': get_latest_vax_data_for_state.__doc__,
-        '/vaccination/state/{state}/{date}': get_vax_data_state.__doc__,
+        '/registration/malaysia': format_docstring(get_latest_registration_data_malaysia.__doc__),
+        '/registration/malaysia/latest': format_docstring(get_latest_registration_data_malaysia.__doc__),
+        '/registration/malaysia/{date}': format_docstring(get_registration_data_malaysia.__doc__),
+        '/vaccination/malaysia': format_docstring(get_latest_vax_data_malaysia.__doc__),
+        '/vaccination/malaysia/latest': format_docstring(get_latest_vax_data_malaysia.__doc__),
+        '/vaccination/malaysia/{date}': format_docstring(get_vax_data_malaysia.__doc__),
+        '/registration/state': format_docstring(get_latest_registration_data_state.__doc__),
+        '/registration/state/all/latest': format_docstring(get_latest_registration_data_state.__doc__),
+        '/registration/state/all/{date}': format_docstring(get_registration_data_all_state.__doc__),
+        '/registration/state/{state}/latest': format_docstring(get_latest_registration_data_for_state.__doc__),
+        '/registration/state/{state}/{date}': format_docstring(get_registration_data_state.__doc__),
+        '/vaccination/state': format_docstring(get_latest_vax_data_state.__doc__),
+        '/vaccination/state/all/latest': format_docstring(get_latest_vax_data_state.__doc__),
+        '/vaccination/state/all/{date}': format_docstring(get_vax_data_all_state.__doc__),
+        '/vaccination/state/{state}/latest': format_docstring(get_latest_vax_data_for_state.__doc__),
+        '/vaccination/state/{state}/{date}': format_docstring(get_vax_data_state.__doc__),
     }
 
 #region Malaysia
@@ -55,7 +57,8 @@ async def get_latest_registration_data_malaysia() -> Union[Dict, None]:
 
 @app.get('/registration/malaysia/{date}')
 async def get_registration_data_malaysia(date: str) -> Union[Dict, None]:
-    """Returns the registration statistics for Malaysia during a certain date with format YYYY-MM-DD."""
+    """Returns the registration statistics for Malaysia \
+    during a certain date with format YYYY-MM-DD."""
 
     dataframe = vax_registration_malaysia_parser.csv()
     matching = dataframe[dataframe['date'] == date].to_dict('records')
@@ -76,7 +79,8 @@ async def get_latest_vax_data_malaysia() -> Dict:
 
 @app.get('/vaccination/malaysia/{date}')
 async def get_vax_data_malaysia(date: str) -> Union[Dict, None]:
-    """Returns the vaccination statistics for Malaysia during a certain date with format YYYY-MM-DD."""
+    """Returns the vaccination statistics for Malaysia \
+    during a certain date with format YYYY-MM-DD."""
 
     dataframe = vax_malaysia_parser.csv()
     matching = dataframe[dataframe['date'] == date].to_dict('records')
@@ -157,7 +161,11 @@ async def get_vax_data_all_state(date: str) -> Union[Dict, None]:
 
 @app.get('/vaccination/state/{state}/latest')
 async def get_latest_vax_data_for_state(state: str) -> Union[Dict, None]:
-    """Returns the latest vaccination statistics for a specific state. Note that this should follow the same naming scheme as that specified in the CITF repository (see https://github.com/CITF-Malaysia/citf-public/blob/main/vaccination/vax_state.csv)."""
+    """Returns the latest vaccination statistics for a \
+    specific state. Note that this should follow the \
+    same naming scheme as that specified in the CITF \
+    repository \
+    (see https://github.com/CITF-Malaysia/citf-public/blob/main/vaccination/vax_state.csv)."""
 
     dataframe = vax_state_parser.csv().tail(16)
     matching = dataframe[dataframe['state'] == state].to_dict('records')
@@ -169,7 +177,11 @@ async def get_latest_vax_data_for_state(state: str) -> Union[Dict, None]:
 
 @app.get('/vaccination/state/{state}/{date}')
 async def get_vax_data_state(state: str, date: str) -> Union[Dict, None]:
-    """Returns the vaccination statistics for a certain state during a certain date with format YYYY-MM-DD. Note that this should follow the same naming scheme as that specified in the CITF repository (see https://github.com/CITF-Malaysia/citf-public/blob/main/vaccination/vax_state.csv)."""
+    """Returns the vaccination statistics for a certain \
+    state during a certain date with format YYYY-MM-DD. \
+    Note that this should follow the same naming scheme \
+    as that specified in the CITF repository \
+    (see https://github.com/CITF-Malaysia/citf-public/blob/main/vaccination/vax_state.csv)."""
 
     dataframe = vax_state_parser.csv()
     matching = dataframe[dataframe['date'] == date]
